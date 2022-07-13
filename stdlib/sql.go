@@ -563,6 +563,7 @@ func (r *Rows) ColumnTypePrecisionScale(index int) (precision, scale int64, ok b
 // ColumnTypeScanType returns the value type that can be used to scan types into.
 func (r *Rows) ColumnTypeScanType(index int) reflect.Type {
 	fd := r.rows.FieldDescriptions()[index]
+	fmt.Printf("datatype oid: %v\n", fd.DataTypeOID)
 
 	switch fd.DataTypeOID {
 	case pgtype.Float8OID:
@@ -579,7 +580,7 @@ func (r *Rows) ColumnTypeScanType(index int) reflect.Type {
 		return reflect.TypeOf(false)
 	case pgtype.NumericOID:
 		return reflect.TypeOf(float64(0))
-	case pgtype.DateOID, pgtype.TimestampOID, pgtype.TimestamptzOID:
+	case pgtype.DateOID, pgtype.TimeOID, pgtype.TimestampOID, pgtype.TimestamptzOID:
 		return reflect.TypeOf(time.Time{})
 	case pgtype.ByteaOID:
 		return reflect.TypeOf([]byte(nil))
